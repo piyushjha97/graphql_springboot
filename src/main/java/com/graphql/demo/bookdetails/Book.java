@@ -4,10 +4,7 @@ import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
-import com.graphql.demo.controllers.BookController;
 
 import lombok.extern.slf4j.Slf4j;
 
