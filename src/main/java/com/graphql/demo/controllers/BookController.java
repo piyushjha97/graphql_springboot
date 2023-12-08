@@ -1,6 +1,7 @@
 package com.graphql.demo.controllers;
 
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
@@ -17,8 +18,16 @@ public class BookController {
 	
 	@QueryMapping
 	public Book bookById(@Argument String id) {
-		log.info("Querying database to get the book by its id"+ id);
+		log.info("Querying database to get the book by its id: "+ id);
 		return Book.getBookById(id);
+	}
+	
+	
+	@MutationMapping
+	public Book addBook(@Argument String name, @Argument int pageCount) {
+		Book newBook = new Book("book-4", name,pageCount, "author-4");
+		Book.storeBook(newBook);
+		return newBook;
 	}
 	
 	@SchemaMapping
@@ -28,9 +37,10 @@ public class BookController {
 	}
 	
 	@SchemaMapping
-	public AuthorContactDetails AuthorContactDetails(Author author) {
+	public AuthorContactDetails AuthorContactDetails(Book book) {
 		log.info("making a query to the authordetails database to get the authordetails for a particular author in order to match the schema defined");
-		return AuthorContactDetails.getContactDetailsById(author.getContactId());
+		Author temp = Author.getAutherById(book.getAuthorId());
+		return AuthorContactDetails.getContactDetailsById(temp.getContactId());
 		
 	}
 
