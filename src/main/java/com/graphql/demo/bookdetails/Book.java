@@ -1,6 +1,7 @@
 package com.graphql.demo.bookdetails;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,24 +22,26 @@ public class Book {
 	
 	public Book(String id, String name, int pageCount, String authorId) {
 		log.info("constructor called for: "+ id);
-		System.out.println("Book class");
         this.id = id;
         this.name = name;
         this.pageCount = pageCount;
         this.authorId = authorId;
+       log.info("Book class with name: "+ this.name + " added");
     }
 	
-	private static List<Book> books =  Arrays.asList(
-            new Book("book-1", "Harry Potter and the Philosopher's Stone", 223, "author-1"),
+	
+	private static List<Book> temp = Arrays.asList( 
+			new Book("book-1", "Harry Potter and the Philosopher's Stone", 223, "author-1"),
             new Book("book-2", "Moby Dick", 635, "author-2"),
             new Book("book-3", "Interview with the vampire", 371, "author-3"));
+	
+	private static ArrayList<Book> books =  new ArrayList<Book>(temp);
 	
 	public String getBookId() {
 		return this.id;
 	}
 	
-	public static Book getBookById(String id) {
-		
+	public static Book getBookById(String id) {	
 		for(Book book:books) {
 			if(book.getBookId().equals(id)) return book;
 		}
@@ -47,6 +50,11 @@ public class Book {
 	
 	public  String getAuthorId() {
 		return authorId;
+	}
+	
+	public static void storeBook(Book newbook) {
+		Author.addAuthor(newbook.getAuthorId());
+		books.add(newbook);
 	}
 
 }

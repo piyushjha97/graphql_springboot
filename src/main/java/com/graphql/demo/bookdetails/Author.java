@@ -1,11 +1,15 @@
 package com.graphql.demo.bookdetails;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 public class Author {
     private String id;
     private String firstName;
@@ -20,22 +24,32 @@ public class Author {
         this.lastName = lastName;
         this.contactId = contactId;
     }
-
-    private static List<Author> authors = Arrays.asList(
-            new Author("author-1", "Joanne", "Rowling", "contact-1"),
+    
+    private static List<Author> temp = Arrays.asList( new Author("author-1", "Joanne", "Rowling", "contact-1"),
             new Author("author-2", "Herman", "Melville", "contact-2"),
-            new Author("author-3", "Anne", "Rice", "contact-3")
-    );
+            new Author("author-3", "Anne", "Rice", "contact-3"));
+
+    private static ArrayList<Author> authors = new ArrayList<Author>(temp);
 
     public static Author getAutherById(String id) {
-        return authors.stream().filter(author -> author.getAutherId().equals(id)).findFirst().orElse(null);
+    	for(Author author:authors) {
+			if(author.getAuthorId().equals(id)) return author;
+		}
+		return null;
+        //return authors.stream().filter(author -> author.getAutherId().equals(id)).findFirst().orElse(null);
     }
 
-    public String getAutherId() {
+    public String getAuthorId() {
         return id;
     }
 
     public String getContactId() {
         return contactId;
+    }
+    
+    public static void addAuthor(String authorId) {
+    	Author newAuthor = new Author(authorId, "N C", "Vij", "contact-4");
+    	AuthorContactDetails.addAuthorContactDetails(newAuthor.getContactId());
+    	authors.add(newAuthor);
     }
 }
